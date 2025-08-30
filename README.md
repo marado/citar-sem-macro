@@ -31,8 +31,10 @@ com o argumento `ultimo` mas esse é considerado opcional. Se tiver o argumento
 macro numa referência sem ela.
 
 Este script é escrito em Perl, e foi testado na versão v5.34.0, em ambiente
-GNU/Linux. Pode ser usado correndo `./citar-sem-macro.pl < pagina-a-mudar.txt >
-resultado.txt`.
+GNU/Linux. Pode ser usado correndo:
+```
+./citar-sem-macro.pl < pagina-a-mudar.txt > resultado.txt
+```
 
 ## Exemplo prático
 
