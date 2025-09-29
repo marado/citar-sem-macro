@@ -10,7 +10,7 @@ binmode(STDOUT, ':encoding(UTF-8)');
 my @months = ("", "janeiro","fevereiro","março","abril","maio","junho",
               "julho","agosto","setembro","outubro","novembro","dezembro");
 
-my %allowed = map { $_ => 1 } qw(ultimo url titulo acessodata website lingua);
+my %allowed = map { $_ => 1 } qw(primeiro ultimo url titulo acessodata website lingua data);
 
 while (my $line = <STDIN>) {
     my $output = '';
@@ -72,11 +72,22 @@ sub process_template {
         my $mn = $months[$m] // $m;
         $ac = "$d de $mn de $y";
     }
+    my $data = "";
+    $data = $vals{data} if (exists $vals{data});
+    if ($data =~ /^(\d{4})-(\d{1,2})-(\d{1,2})$/) {
+        my ($y,$m,$d) = ($1,int($2),int($3));
+        my $mn = $months[$m] // $m;
+        $data = "$d de $mn de $y. ";
+    }
 
     my $out = '';
-    $out .= $vals{ultimo} . '. ' if (exists $vals{ultimo} && $vals{ultimo} ne '');
+    if (exists $vals{ultimo} && $vals{ultimo} ne '') {
+        $out .= $vals{ultimo};
+        $out .= ', ' . $vals{primeiro} if (exists $vals{primeiro} && $vals{primeiro} ne '');
+        $out .= '. ';
+    }
     $out .= '[' . $vals{url} . ' «' . $vals{titulo} . '»]. \'\''
-          . $vals{website} . '\'\' Consultado em ' . $ac;
+          . $vals{website} . '\'\' ' . $data . 'Consultado em ' . $ac;
     return $out;
 }
 
